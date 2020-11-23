@@ -9,14 +9,18 @@ import com.intellij.execution.process.OSProcessHandler;
 import com.intellij.execution.process.ProcessHandler;
 import com.intellij.execution.runners.ExecutionEnvironment;
 import com.intellij.openapi.module.Module;
+import com.intellij.openapi.util.text.StringUtil;
+import com.reason.ide.debug.conf.OclRunConfiguration;
 import org.jetbrains.annotations.NotNull;
 
-public class OCamlApplicationRunningState extends CommandLineState {
+public class OclProgramRunningState extends CommandLineState {
   private final Module m_module;
+  private final OclRunConfiguration m_configuration;
 
-  protected OCamlApplicationRunningState(ExecutionEnvironment environment, Module module) {
+  public OclProgramRunningState(ExecutionEnvironment environment, Module module, OclRunConfiguration configuration) {
     super(environment);
     m_module = module;
+    m_configuration = configuration;
   }
 
   @NotNull
@@ -30,9 +34,9 @@ public class OCamlApplicationRunningState extends CommandLineState {
   private GeneralCommandLine getCommand() {
     GeneralCommandLine commandLine = new GeneralCommandLine();
     // set exe/working dir/...
-    TextConsoleBuilder consoleBuilder =
-        TextConsoleBuilderFactory.getInstance().createBuilder(m_module.getProject());
-    setConsoleBuilder(consoleBuilder);
+    String workDirectory = m_configuration.getWorkDirectory();
+    commandLine.withWorkDirectory(StringUtil.isEmpty(workDirectory) ? m_module.getProject().getBasePath() : workDirectory);
+
     return commandLine;
   }
 }

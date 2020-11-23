@@ -52,5 +52,19 @@
 
         <toolWindow id="Dune:" anchor="bottom" factoryClass="com.reason.ide.console.DuneToolWindowFactory"/>
 
+        <!--
+         | Debug
+         -->
+
+        <!--
+         | Debug
+         -->
+
+        <xdebugger.breakpointType implementation="com.reason.ide.debug.ORLineBreakpointType"/>
+
+        <programRunner implementation="com.reason.ide.debug.OclProgramRunner"/>
+        <configurationType implementation="com.reason.ide.debug.conf.OclConfigurationType"/>
+        <runConfigurationProducer implementation="com.reason.ide.debug.conf.OclRunConfigurationProducer"/>
+
     </extensions>
 </idea-plugin>
