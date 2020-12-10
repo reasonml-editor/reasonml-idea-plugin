@@ -142,13 +142,13 @@ class DuneFacetEditor extends FacetEditorTab {
                 return 3;
             }
 
-            @Override
-            public Object getValueAt(int rowIndex, int columnIndex) {
-                String[] columns = m_env.get(rowIndex);
-                return columns.length <= columnIndex ? "" : columns[columnIndex];
-            }
-        };
-    }
+      @Override
+      public Object getValueAt(int rowIndex, int columnIndex) {
+        String[] columns = m_env.get(rowIndex);
+        return columns.length <= columnIndex ? "" : columns[columnIndex];
+      }
+    };
+  }
 
     @Override
     public boolean isModified() {

@@ -10,7 +10,7 @@ import org.jetbrains.annotations.NotNull;
 
 public class OclConfigurationType extends SimpleConfigurationType implements DumbAware {
     protected OclConfigurationType() {
-        super("ocaml.build_tool", "Ocaml application", null, NotNullLazyValue.createValue(() -> ORIcons.OCL_FILE_MODULE));
+        super("ocaml.build_tool", "Ocaml application", "Run a byte code ocaml application", NotNullLazyValue.createValue(() -> ORIcons.OCL_FILE_MODULE));
     }
 
     @Override

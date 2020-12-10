@@ -7,7 +7,7 @@ import org.jetbrains.annotations.NotNull;
 
 /** Type of OCaml native project. */
 public class OCamlModuleType extends ModuleType<OCamlModuleBuilder> {
-
+  public static final String NAME = "OCaml module";
   private static final OCamlModuleType INSTANCE = new OCamlModuleType();
 
   private OCamlModuleType() {
@@ -29,7 +29,7 @@ public class OCamlModuleType extends ModuleType<OCamlModuleBuilder> {
   @Override
   public String getName() {
     //noinspection DialogTitleCapitalization
-    return "OCaml module";
+    return NAME;
   }
 
   @NotNull

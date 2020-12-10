@@ -62,8 +62,8 @@
 
         <xdebugger.breakpointType implementation="com.reason.ide.debug.ORLineBreakpointType"/>
 
-        <programRunner implementation="com.reason.ide.debug.OclProgramRunner"/>
         <configurationType implementation="com.reason.ide.debug.conf.OclConfigurationType"/>
+        <programRunner implementation="com.reason.ide.debug.OclProgramRunner"/>
         <runConfigurationProducer implementation="com.reason.ide.debug.conf.OclRunConfigurationProducer"/>
 
     </extensions>

@@ -1,17 +1,17 @@
 package com.reason.ide.debug;
 
-import com.intellij.execution.ExecutionException;
-import com.intellij.execution.configurations.CommandLineState;
-import com.intellij.execution.configurations.GeneralCommandLine;
-import com.intellij.execution.filters.TextConsoleBuilder;
-import com.intellij.execution.filters.TextConsoleBuilderFactory;
-import com.intellij.execution.process.OSProcessHandler;
-import com.intellij.execution.process.ProcessHandler;
-import com.intellij.execution.runners.ExecutionEnvironment;
-import com.intellij.openapi.module.Module;
+import com.intellij.execution.*;
+import com.intellij.execution.configurations.*;
+import com.intellij.execution.process.*;
+import com.intellij.execution.runners.*;
+import com.intellij.facet.*;
+import com.intellij.openapi.module.*;
+import com.intellij.openapi.projectRoots.*;
 import com.intellij.openapi.util.text.StringUtil;
-import com.reason.ide.debug.conf.OclRunConfiguration;
-import org.jetbrains.annotations.NotNull;
+import com.reason.*;
+import com.reason.ide.debug.conf.*;
+import com.reason.ide.facet.*;
+import org.jetbrains.annotations.*;
 
 public class OclProgramRunningState extends CommandLineState {
   private final Module m_module;
@@ -23,20 +23,22 @@ public class OclProgramRunningState extends CommandLineState {
     m_configuration = configuration;
   }
 
-  @NotNull
   @Override
-  protected ProcessHandler startProcess() throws ExecutionException {
-    GeneralCommandLine commandLine = getCommand();
-    return new OSProcessHandler(commandLine.createProcess(), commandLine.getCommandLineString());
-  }
+  protected @NotNull ProcessHandler startProcess() throws ExecutionException {
+    DuneFacet duneFacet = FacetManager.getInstance(m_module).getFacetByType(DuneFacet.ID);
+    Sdk odk = duneFacet == null ? null : duneFacet.getODK();
 
-  @NotNull
-  private GeneralCommandLine getCommand() {
-    GeneralCommandLine commandLine = new GeneralCommandLine();
-    // set exe/working dir/...
+    OCamlExecutable exeEnv = OCamlExecutable.getExecutable(odk);
+
     String workDirectory = m_configuration.getWorkDirectory();
-    commandLine.withWorkDirectory(StringUtil.isEmpty(workDirectory) ? m_module.getProject().getBasePath() : workDirectory);
+    String path = StringUtil.isEmpty(workDirectory) ? m_module.getProject().getBasePath() : workDirectory;
 
-    return commandLine;
+    GeneralCommandLine command = new GeneralCommandLine()
+                                     .withExePath(path + "/main")
+                                     .withWorkDirectory(path);
+
+    GeneralCommandLine cli = exeEnv.patchCommandLine(command, null, false, m_module.getProject());
+
+    return new KillableProcessHandler(cli);
   }
 }

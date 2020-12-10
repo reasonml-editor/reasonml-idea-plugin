@@ -55,7 +55,7 @@ public abstract class OCamlExecutable {
   public abstract String convertPath(Path file);
 
   public abstract @NotNull GeneralCommandLine patchCommandLine(@NotNull GeneralCommandLine commandLine,
-                                                               String pathToBinary, boolean login,
+                                                               @Nullable String pathToBinary, boolean login,
                                                                @NotNull Project project);
 
   // From GitExecutableManager
