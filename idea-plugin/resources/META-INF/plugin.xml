@@ -387,6 +387,10 @@
             <className>com.reason.ide.intentions.ExpandLocalOpenIntention</className>
             <category>Reason</category>
         </intentionAction>
+        <intentionAction>
+            <className>com.reason.ide.intentions.IntroduceLocalVariableIntention</className>
+            <category>Reason</category>
+        </intentionAction>
 
         <!--
          | Debug

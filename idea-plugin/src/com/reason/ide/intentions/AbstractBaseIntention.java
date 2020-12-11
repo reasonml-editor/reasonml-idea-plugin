@@ -49,7 +49,13 @@ abstract class AbstractBaseIntention<T extends PsiElement> implements IntentionA
   @Nullable
   private T getParentAtCaret(@NotNull Editor editor, @NotNull PsiFile file) {
     PsiElement element = elementAtCaret(editor, file);
-    return element == null ? null : PsiTreeUtil.getParentOfType(element, getClazz());
+    if (element != null) {
+        if (element.getParent() instanceof PsiFile) {
+          return element.getParent();
+        }
+      T parentOfType = PsiTreeUtil.getParentOfType(element, getClazz());
+    }
+    return null;
   }
 
   @Nullable
