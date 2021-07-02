@@ -21,7 +21,7 @@ public class ModuleParsingTest extends ResParsingTestCase {
     }
 
     public void test_alias() {
-        PsiModule module = firstOfType(parseCode("module M = Y"), PsiInnerModule.class);
+        PsiModule module = firstOfType(parseCode("module M = Y\n M.x"), PsiInnerModule.class);
 
         assertEquals("M", module.getName());
         assertEquals("Y", module.getAlias());

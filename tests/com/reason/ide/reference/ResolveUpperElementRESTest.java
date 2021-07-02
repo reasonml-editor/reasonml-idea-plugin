@@ -3,6 +3,7 @@ package com.reason.ide.reference;
 import com.intellij.psi.*;
 import com.reason.ide.*;
 import com.reason.lang.core.psi.*;
+import com.reason.lang.core.psi.impl.*;
 
 public class ResolveUpperElementRESTest extends ORBasePlatformTestCase {
     public void test_basic_file() {
@@ -10,7 +11,8 @@ public class ResolveUpperElementRESTest extends ORBasePlatformTestCase {
         configureCode("Comp.res", "Dimensions<caret>");
 
         PsiElement e = myFixture.getElementAtCaret();
-        assertEquals("Dimensions.res", ((PsiQualifiedNamedElement) e).getName());
+        assertInstanceOf(e, PsiFakeModule.class);
+        assertEquals("Dimensions.res", e.getContainingFile().getName());
     }
 
     public void test_interface_implementation() {
@@ -19,15 +21,17 @@ public class ResolveUpperElementRESTest extends ORBasePlatformTestCase {
         configureCode("B.res", "A<caret>");
 
         PsiElement e = myFixture.getElementAtCaret();
-        assertEquals("A.res", ((PsiNamedElement) e).getName());
+        assertInstanceOf(e, PsiFakeModule.class);
+        assertEquals("A.res", e.getContainingFile().getName());
     }
 
     public void test_let_alias() {
         configureCode("Dimensions.res", "let space = 5");
         configureCode("Comp.res", "let s = Dimensions<caret>.space");
 
-        PsiElement elementAtCaret = myFixture.getElementAtCaret();
-        assertEquals("Dimensions.res", ((PsiQualifiedNamedElement) elementAtCaret).getName());
+        PsiElement e = myFixture.getElementAtCaret();
+        assertInstanceOf(e, PsiFakeModule.class);
+        assertEquals("Dimensions.res", e.getContainingFile().getName());
     }
 
     // TODO Later

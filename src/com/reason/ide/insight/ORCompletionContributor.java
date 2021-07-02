@@ -79,7 +79,7 @@ abstract class ORCompletionContributor extends com.intellij.codeInsight.completi
                             PsiElement prevPrevLeaf = prevLeaf.getPrevSibling();
                             if (prevPrevLeaf != null && prevPrevLeaf.getNode().getElementType() != types.LPAREN) {
                                 LOG.debug("the previous element is DOT");
-                                DotExpressionCompletionProvider.addCompletions(qnameFinder, element, result);
+                                DotExpressionCompletionProvider.addCompletions(element, result);
                                 return;
                             }
                         }

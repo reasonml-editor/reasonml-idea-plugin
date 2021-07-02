@@ -164,8 +164,7 @@ public class PsiUpperSymbolReference extends ORMultiSymbolReference<PsiUpperSymb
                 PsiLowerIdentifier identifier = ORUtil.findImmediateFirstChildOfClass(make, PsiLowerIdentifier.class);
                 m_referencedIdentifier = identifier == null ? referencedElement : identifier;
             } else if (referencedElement instanceof PsiFakeModule) {
-                // A fake module resolve to its file
-                m_referencedIdentifier = referencedElement.getContainingFile();
+                m_referencedIdentifier = referencedElement;
             } else if (referencedElement instanceof PsiNameIdentifierOwner) {
                 m_referencedIdentifier = ((PsiNameIdentifierOwner) referencedElement).getNameIdentifier();
             } else {

@@ -161,13 +161,7 @@ public class Log {
 
     public void debug(String comment, @NotNull PsiQualifiedNamedElement element) {
         if (m_log.isDebugEnabled()) {
-            m_log.debug(
-                    comment
-                            + SEP
-                            + element.getQualifiedName()
-                            + " ("
-                            + element.getContainingFile().getVirtualFile().getPath()
-                            + ")");
+            m_log.debug(comment + SEP + element.getQualifiedName() + " (" + element.getContainingFile().getVirtualFile().getPath() + ")");
         }
     }
 

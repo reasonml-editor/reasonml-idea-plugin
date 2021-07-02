@@ -3,14 +3,16 @@ package com.reason.ide.reference;
 import com.intellij.psi.*;
 import com.reason.ide.*;
 import com.reason.lang.core.psi.*;
+import com.reason.lang.core.psi.impl.*;
 
 public class ResolveUpperElementOCLTest extends ORBasePlatformTestCase {
     public void test_basic_file() {
         configureCode("Dimensions.ml", "let space = 5");
         configureCode("Comp.ml", "Dimensions<caret>");
 
-        PsiElement elementAtCaret = myFixture.getElementAtCaret();
-        assertEquals("Dimensions.ml", ((PsiQualifiedNamedElement) elementAtCaret).getName());
+        PsiElement e = myFixture.getElementAtCaret();
+        assertInstanceOf(e, PsiFakeModule.class);
+        assertEquals("Dimensions.ml", e.getContainingFile().getName());
     }
 
     public void test_interface_implementation() {
@@ -19,15 +21,17 @@ public class ResolveUpperElementOCLTest extends ORBasePlatformTestCase {
         configureCode("B.ml", "A<caret>");
 
         PsiElement e = myFixture.getElementAtCaret();
-        assertEquals("A.ml", ((PsiNamedElement) e).getName());
+        assertInstanceOf(e, PsiFakeModule.class);
+        assertEquals("A.ml", e.getContainingFile().getName());
     }
 
     public void test_let_alias() {
         configureCode("Dimensions.ml", "let space = 5");
         configureCode("Comp.ml", "let s = Dimensions<caret>.space");
 
-        PsiElement elementAtCaret = myFixture.getElementAtCaret();
-        assertEquals("Dimensions.ml", ((PsiQualifiedNamedElement) elementAtCaret).getName());
+        PsiElement e = myFixture.getElementAtCaret();
+        assertInstanceOf(e, PsiFakeModule.class);
+        assertEquals("Dimensions.ml", e.getContainingFile().getName());
     }
 
     public void test_alias() {

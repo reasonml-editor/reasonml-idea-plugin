@@ -66,6 +66,8 @@ public class ResParser extends CommonParser<ResTypes> {
 
                     if (state.is(m_types.C_FUNCTOR_CALL/*PsiOpen is potential functor call*/) && state.isPrevious(m_types.C_OPEN)) {
                         state.popEnd().popEnd();
+                    } else if (state.is(m_types.C_FUNCTOR_CALL/*module alias is potential functor call*/) && state.isGrandParent(m_types.C_MODULE_DECLARATION)) {
+                        state.popEndUntil(m_types.C_MODULE_DECLARATION).popEnd();
                     } else if (state.isPrevious(m_types.C_ANNOTATION) && !state.is(m_types.C_SCOPED_EXPR)) {
                         // inside an annotation
                         state.popEnd().popEnd();

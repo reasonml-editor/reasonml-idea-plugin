@@ -146,23 +146,20 @@ public class PsiInnerModuleImpl extends PsiTokenStub<ORTypes, PsiModule, PsiModu
 
         String alias = getAlias();
         if (alias != null) {
-            // Open alias and getExpressions on alias
-            Set<PsiModule> modulesByName =
-                    psiFinder.findModulesbyName(
-                            alias, interfaceOrImplementation, null, GlobalSearchScope.allScope(getProject()));
-            if (!modulesByName.isEmpty()) {
-                PsiModule moduleAlias = modulesByName.iterator().next();
-                if (moduleAlias != null) {
-                    result = moduleAlias.getExpressions(eScope, filter);
-                }
+            // Resolve alias and get expressions on alias
+            PsiElement lastChild = getLastChild();
+            PsiReference reference = lastChild.getReference();
+            PsiElement resolve = reference == null ? null : reference.resolve();
+            PsiElement resolvedElement = (resolve instanceof PsiUpperIdentifier) ? resolve.getParent() : resolve;
+            if (resolvedElement instanceof PsiModule) {
+                result = ((PsiModule) resolvedElement).getExpressions(eScope, filter);
             }
         } else {
             PsiModuleType moduleType = getModuleType();
             if (moduleType == null) {
                 PsiElement body = getBody();
                 if (body == null) {
-                    PsiFunctorCall functorCall =
-                            ORUtil.findImmediateFirstChildOfClass(this, PsiFunctorCall.class);
+                    PsiFunctorCall functorCall = ORUtil.findImmediateFirstChildOfClass(this, PsiFunctorCall.class);
                     if (functorCall != null) {
                         result = new ArrayList<>();
                         // Include all expressions from functor
@@ -222,10 +219,8 @@ public class PsiInnerModuleImpl extends PsiTokenStub<ORTypes, PsiModule, PsiModu
     public @Nullable PsiType getTypeExpression(@Nullable String name) {
         PsiElement body = name == null ? null : getBody();
         if (body != null) {
-            ExpressionFilter expressionFilter =
-                    element -> element instanceof PsiType && name.equals(element.getName());
-            Collection<PsiNamedElement> expressions =
-                    getExpressions(ExpressionScope.all, expressionFilter);
+            ExpressionFilter expressionFilter = element -> element instanceof PsiType && name.equals(element.getName());
+            Collection<PsiNamedElement> expressions = getExpressions(ExpressionScope.all, expressionFilter);
             if (!expressions.isEmpty()) {
                 return (PsiType) expressions.iterator().next();
             }
@@ -238,10 +233,8 @@ public class PsiInnerModuleImpl extends PsiTokenStub<ORTypes, PsiModule, PsiModu
     public @Nullable PsiLet getLetExpression(@Nullable String name) {
         PsiElement body = name == null ? null : getBody();
         if (body != null) {
-            ExpressionFilter expressionFilter =
-                    element -> element instanceof PsiLet && name.equals(element.getName());
-            Collection<PsiNamedElement> expressions =
-                    getExpressions(ExpressionScope.all, expressionFilter);
+            ExpressionFilter expressionFilter = element -> element instanceof PsiLet && name.equals(element.getName());
+            Collection<PsiNamedElement> expressions = getExpressions(ExpressionScope.all, expressionFilter);
             if (!expressions.isEmpty()) {
                 return (PsiLet) expressions.iterator().next();
             }
@@ -254,10 +247,8 @@ public class PsiInnerModuleImpl extends PsiTokenStub<ORTypes, PsiModule, PsiModu
     public @Nullable PsiVal getValExpression(@Nullable String name) {
         PsiElement body = name == null ? null : getBody();
         if (body != null) {
-            ExpressionFilter expressionFilter =
-                    element -> element instanceof PsiVal && name.equals(element.getName());
-            Collection<PsiNamedElement> expressions =
-                    getExpressions(ExpressionScope.all, expressionFilter);
+            ExpressionFilter expressionFilter = element -> element instanceof PsiVal && name.equals(element.getName());
+            Collection<PsiNamedElement> expressions = getExpressions(ExpressionScope.all, expressionFilter);
             if (!expressions.isEmpty()) {
                 return (PsiVal) expressions.iterator().next();
             }
